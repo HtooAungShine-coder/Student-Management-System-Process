@@ -1,0 +1,10 @@
+			  Student Result Exported : 
+ID: 707
+ | Name: Htoo Aung Shine
+  | Overall Average Mark: 81.6667
+  | Grade : A
+  | Attendance : 7
+  | Math : 100
+  | Computer Science : 65
+  | English : 80
+ --------------------------------------------- 

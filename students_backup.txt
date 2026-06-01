@@ -1,0 +1,5 @@
+666,Elon Musk,100,100,100,7
+707,Htoo Aung Shine,65,100,80,7
+334,Kira Yoshikage,60,90,80,7
+307,Mary Jane,69,69,75,7
+225,Dilia Norman,25,80,76,8
