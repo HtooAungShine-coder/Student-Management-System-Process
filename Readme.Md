@@ -31,7 +31,7 @@ File Persistence	Auto-save/load with main file + backup redundancy
 Data Export	Export individual or bulk student results to results.txt
 
 🧠 Mind Map
-
+table
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                    STUDENT MANAGEMENT SYSTEM                            │
 ├─────────────────────────────────────────────────────────────────────────┤
@@ -80,7 +80,7 @@ Data Export	Export individual or bulk student results to results.txt
 
 
 🏗️ System Architecture
-
+table
 ┌─────────────────────────────────────────────────────────────────┐
 │                         PRESENTATION LAYER                        │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │
@@ -116,7 +116,7 @@ Data Export	Export individual or bulk student results to results.txt
 
 📁 Code Structure
 
-
+table
 Advanced.cpp
 │
 ├── PREPROCESSOR & HEADERS
@@ -374,7 +374,7 @@ plain
 
 🔄 Data Flow
 
-
+table
 ┌──────────┐     ┌──────────┐     ┌──────────┐
 │  Start   │────▶│  Login   │────▶│ Load Data│
 └──────────┘     └──────────┘     └────┬─────┘
