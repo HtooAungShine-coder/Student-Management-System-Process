@@ -2,350 +2,134 @@
 I have finally developed a C++ console application for managing student records, grades, attendance, and user authentication.
  Built with Object-Oriented Programming principles including Inheritance, Polymorphism, Encapsulation, and Friend Functions.
 
-📋 Table of Contents
-Features
-Mind Map
-System Architecture
-Code Structure
-Class Hierarchy
-File Formats
-User Roles & Permissions
-Compilation & Execution
-Menu Navigation
-Data Flow
+---
 
-✨ Features
+## 📋 Table of Contents
+* [Features](#-features)
+* [System Design](#-system-design)
+  * [Process Workflow](#process-workflow)
+  * [System Architecture](#system-architecture)
+* [Code Architecture](#-code-architecture)
+  * [Class Hierarchy](#class-hierarchy)
+  * [File Organization](#file-organization)
+* [User Roles & Permissions](#-user-roles--permissions)
+* [File Specifications](#-file-specifications)
+* [Getting Started](#-getting-started)
+  * [Prerequisites](#prerequisites)
+  * [Compilation & Execution](#compilation--execution)
+* [Menu Navigation Structure](#-menu-navigation-structure)
 
-Feature	Description
-GPA System	4.0 scale GPA calculation per student across 3 subjects
-Grade System	Letter grades (A, B, C, F) based on overall average
-Ranking System	Top 5 students ranked by total marks
-Sorting Options	Sort by ID, Name, Marks, or GPA
-Exam Result Processor	Process, display, and export exam results to file
-Multi-User Login	Role-based authentication (Admin, Teacher, Student)
-Attendance Manager	Mark and track daily attendance per student
-Scholarship Checker	Eligibility check based on GPA ≥ 3.5
-User Management	Add, display, and delete users (Admin only)
-Report Card Generator	Formatted console report cards per student
-File Persistence	Auto-save/load with main file + backup redundancy
-Data Export	Export individual or bulk student results to results.txt
+---
 
-🧠 Mind Map
-plain
-┌─────────────────────────────────────────────────────────────────────────┐
-│                    STUDENT MANAGEMENT SYSTEM                            │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                         │
-│  ┌──────────────┐      ┌──────────────┐      ┌──────────────┐       │
-│  │   LOGIN      │─────▶│  ROLE CHECK  │─────▶│  MAIN MENU   │       │
-│  │  (users.txt) │      │              │      │              │       │
-│  └──────────────┘      └──────────────┘      └──────┬───────┘       │
-│                                                     │                 │
-│           ┌─────────────────────────────────────────┘                 │
-│           │                                                           │
-│     ┌─────┴─────┬──────────┬──────────┬──────────┬──────────┐      │
-│     │           │          │          │          │          │      │
-│     ▼           ▼          ▼          ▼          ▼          ▼      │
-│ ┌───────┐  ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ │
-│ │Search │  │Average │ │High/   │ │Grade   │ │Edit    │ │Student │ │
-│ │Student│  │Marks   │ │Low     │ │System  │ │Data    │ │Info &  │ │
-│ │       │  │        │ │Marks   │ │        │ │        │ │Sorting │ │
-│ └───┬───┘  └───┬────┘ └───┬────┘ └───┬────┘ └───┬────┘ └───┬────┘ │
-│     │          │          │          │          │          │        │
-│     ▼          ▼          ▼          ▼          ▼          ▼        │
-│ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐│
-│ │By Name │ │Math    │ │Highest │ │Letter  │ │Delete  │ │Sort by ││
-│ │By ID   │ │CS      │ │Lowest  │ │Grades  │ │Update  │ │ID/Name ││
-│ │Total   │ │English │ │        │ │Pass/Fail│ │Add New │ │Mark/GPA││
-│ │List    │ │Overall │ │        │ │GPA View│ │        │ │Display ││
-│ └────────┘ └────────┘ └────────┘ └────────┘ └────────┘ └────────┘│
-│                                                                         │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐            │
-│  │Attendance│  │Exam      │  │Scholarship│  │User      │            │
-│  │Manager   │  │Processor │  │Checker   │  │Management│            │
-│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘            │
-│       │             │             │             │                      │
-│       ▼             ▼             ▼             ▼                      │
-│  ┌────────┐   ┌────────┐  ┌────────┐  ┌────────┐                  │
-│  │Mark    │   │Process │  │Check   │  │Display │                  │
-│  │Display │   │Export  │  │Eligible│  │Register│                  │
-│  │        │   │        │  │        │  │Delete  │                  │
-│  └────────┘   └────────┘  └────────┘  └────────┘                  │
-│                                                                         │
-│  ┌─────────────────────────────────────────────────────────────┐     │
-│  │              REPORT CARD GENERATOR (Per Student)            │     │
-│  └─────────────────────────────────────────────────────────────┘     │
-│                                                                         │
-└─────────────────────────────────────────────────────────────────────────┘
+## ✨ Features
 
+| Feature | Description |
+| :--- | :--- |
+| **📈 GPA & Grading** | Automated 4.0 scale GPA calculation across 3 core subjects alongside letter grade mapping (A, B, C, F). |
+| **🏆 Ranking & Sorting** | Real-time Top 5 student ranking with dynamic sorting configurations (by ID, Name, Marks, or GPA). |
+| **🔐 Multi-User Auth** | Secure, role-based authentication separating workflows for **Admins**, **Teachers**, and **Students**. |
+| **📅 Attendance Engine** | Integrated tracker to mark, store, and display cumulative student attendance metrics. |
+| **💰 Scholarship Evaluator** | Algorithmic eligibility checker flags students maintaining a $\text{GPA} \ge 3.5$. |
+| **🖨️ Report Generator** | Formatted command-line report cards and automated bulk export of processing results to `results.txt`. |
+| **🛡️ Fault Tolerance** | Dynamic text-file storage architecture featuring automated data persistence and real-time backup redundancy. |
 
-🏗️ System Architecture
-plain
-┌─────────────────────────────────────────────────────────────────┐
-│                         PRESENTATION LAYER                        │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │
-│  │ Console I/O │  │ Menu System │  │ Formatted Output (iomanip)│  │
-│  └─────────────┘  └─────────────┘  └─────────────────────────┘  │
-├─────────────────────────────────────────────────────────────────┤
-│                         BUSINESS LOGIC LAYER                    │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │
-│  │  Student    │  │   Person    │  │   GPA/Grade Calculator  │  │
-│  │  (derived)  │  │  (base)     │  │   Ranking/Sorting       │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────────┘  │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │
-│  │  Attendance │  │  Scholarship│  │   Exam Result Processor │  │
-│  │  Manager    │  │  Checker    │  │                         │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────────┘  │
-├─────────────────────────────────────────────────────────────────┤
-│                         AUTHENTICATION LAYER                    │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │
-│  │   Login     │  │ Role-Based  │  │   User Management       │  │
-│  │   System    │  │   Access    │  │   (CRUD operations)     │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────────┘  │
-├─────────────────────────────────────────────────────────────────┤
-│                         DATA LAYER                              │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │
-│  │ students.txt│  │  users.txt  │  │      results.txt        │  │
-│  │(main data)  │  │(auth data)  │  │    (export target)      │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────────┘  │
-│  ┌─────────────┐  ┌─────────────┐                                │
-│  │students_    │  │  users_     │                                │
-│  │backup.txt   │  │ backup.txt  │   ← Redundancy / Failover      │
-│  └─────────────┘  └─────────────┘                                │
-└─────────────────────────────────────────────────────────────────┘
+---
 
-📁 Code Structure
-plain
-Advanced.cpp
-│
-├── PREPROCESSOR & HEADERS
-│   ├── iostream, fstream, string, vector, algorithm
-│   ├── sstream, iomanip
-│   └── using namespace std;
-│
-├── GLOBAL DECLARATIONS
-│   ├── string GetGrade(double mark);     // Function prototype
-│   ├── vector<student> class_list;       // Global student database
-│   └── User currentuser;                 // Global session holder
-│
-├── CLASS HIERARCHY
-│   ├── class Person (BASE)
-│   │   ├── protected: full_name, age
-│   │   ├── Constructor, Getters/Setters
-│   │   ├── virtual displayInfo()
-│   │   └── virtual ~Person()
-│   │
-│   └── class student : public Person (DERIVED)
-│       ├── private: id, cs_mark, math_mark, english_mark,
-│       │            attendance_record, gpa
-│       ├── Constructor with GPA auto-calculation
-│       ├── marktoPoint() → GPA helper
-│       ├── calculateGPA() → 4.0 scale logic
-│       ├── upgradeGPA() / setGPA() / getGPA()
-│       ├── displayInfo() OVERRIDE (polymorphism)
-│       ├── Getters & Setters (with GPA auto-update on marks)
-│       ├── overallAverage() helper
-│       └── friend void exportsdata(...)
-│
-├── AUTHENTICATION MODULE
-│   ├── struct User { username, password, role }
-│   ├── bool login(filename, backupName)
-│   ├── void registeruser(filename, backup_name)
-│   ├── bool hasrole(required)
-│   ├── bool hasAnyrole(vector<roles>)
-│   ├── void displayusers(filename, backupname)
-│   └── void deleteusers(filename, backupname)
-│
-├── FILE I/O MODULE
-│   ├── void SaveToFile(filename, backupName)
-│   ├── void LoadFromFile(filename, backupName)
-│   └── void exportsdata(student, ofstream) [friend function]
-│
-├── SEARCH MODULE
-│   ├── void searchStudentByID(int id)
-│   ├── void searchStudentByName(string name)
-│   ├── void handleStudentName()
-│   ├── void handleStudentID()
-│   └── int displayIDlist()
-│
-├── STATISTICS MODULE
-│   ├── void handleAverageMarks()
-│   ├── void High_Low_Students()
-│   └── void displayTotalStudents()
-│
-├── GRADING MODULE
-│   ├── string GetGrade(double mark)
-│   └── void handleGrades()
-│
-├── EDITING MODULE
-│   ├── void deleteStudentByID()
-│   ├── void updateStudentName()
-│   ├── void updateStudentMark()
-│   └── void addNewStudent()
-│
-├── SORTING & DISPLAY MODULE
-│   ├── void displayStudentInfo()
-│   ├── void SortByID()
-│   ├── void SortByName()
-│   ├── void SortByMark()
-│   └── void SortbyGpa()
-│
-├── ATTENDANCE MODULE
-│   ├── void markAttendance()
-│   └── void displayAttendance()
-│
-├── EXPORT MODULE
-│   └── void ExportResults(filename)
-│
-├── RANKING MODULE
-│   ├── void RankStudents()
-│   └── void ProcessExamResults()
-│
-├── SCHOLARSHIP MODULE
-│   └── void scholarchecker()
-│
-├── REPORT CARD MODULE
-│   └── void ReportCard()
-│
-├── UTILITY MODULE
-│   └── bool askMenuOrExit()
-│
-└── MAIN DRIVER
-    ├── login() → LoadFromFile()
-    ├── Welcome Banner
-    ├── do-while Menu Loop
-    │   ├── switch(answer) → 10 main cases (a-j, o)
-    │   ├── Role validation per case
-    │   ├── Nested switches for sub-menus
-    │   └── askMenuOrExit() per operation
-    └── SaveToFile() on exit
-    
-🧬 Class Hierarchy
-plain
+## 🧠 System Design
 
-                    ┌─────────────┐
-                    │   Person    │
-                    │  (Abstract) │
-                    ├─────────────┤
-                    │ - full_name │
-                    │ - age       │
-                    ├─────────────┤
-                    │ + getName() │
-                    │ + getAge()  │
-                    │ + setName() │
-                    │ + setAge()  │
-                    │ + display() │◄── virtual
-                    │ + ~Person() │◄── virtual
-                    └──────┬──────┘
-                           │ public inheritance
-                           ▼
-                    ┌─────────────┐
-                    │   student   │
-                    ├─────────────┤
-                    │ - id        │
-                    │ - cs_mark   │
-                    │ - math_mark │
-                    │ - eng_mark  │
-                    │ - attendance│
-                    │ - gpa       │
-                    ├─────────────┤
-                    │ + getID()   │
-                    │ + getGPA()  │
-                    │ + setMarks()│◄── triggers upgradeGPA()
-                    │ + display() │◄── override
-                    │ + overall() │
-                    │ + marktoPt()│
-                    │ + calcGPA() │
-                    └─────────────┘
-                           │
-                           │ friend
-                           ▼
-                    ┌─────────────┐
-                    │ exportsdata │
-                    └─────────────┘
-
-📂 File Formats
-students.txt / students_backup.txt
-
-<ID>,<Name>,<Age>,<CS>,<Math>,<English>,<Attendance>,<GPA>
-Example:
-plain
+### Process Workflow
+```dayman
+[Start] ──> [Login Screen] ──> [Load Data From File]
+                                      │
+                                      ▼
+                             [Main Menu Interface] ◄───┐
+                                      │                │
+                        ┌─────────────┴─────────────┐  │
+                        ▼                           ▼  │
+               [Execute Operations]         [Render Outputs]
+               (CRUD, Sort, Filter)         (Console/Export)
+                        │                              │
+                        └─────────────┬─────────────┘  │
+                                      ▼                │
+                             [Auto-Save & Backup] ─────┘
+                                      │
+                                      ▼
+                                   [Exit]
+System ArchitectureCode snippet┌───────────────────────────────────────────────────────────────────────────┐
+│                            PRESENTATION LAYER                             │
+│       [Console I/O Engine]   [Menu Subsystem]   [iomanip Formatters]       │
+├───────────────────────────────────────────────────────────────────────────┤
+│                            BUSINESS LOGIC LAYER                           │
+│       [Person Base Class]     [Student Derived]     [GPA/Grade Matrix]    │
+│       [Attendance Engine]     [Scholarship Unit]    [Exam Processor]      │
+├───────────────────────────────────────────────────────────────────────────┤
+│                           AUTHENTICATION LAYER                            │
+│       [Login System]         [Role Validator]      [User CRUD Matrix]     │
+├───────────────────────────────────────────────────────────────────────────┤
+│                                DATA LAYER                                 │
+│  Main Data:     [students.txt]                 [users.txt]                │
+│  Redundancy:    [students_backup.txt]          [users_backup.txt]         │
+│  Exports:       [results.txt]                                             │
+└───────────────────────────────────────────────────────────────────────────┘
+📁 Code ArchitectureClass HierarchyCode snippet               ┌─────────────────────────────────┐
+               │         Person (Abstract)       │
+               ├─────────────────────────────────┤
+               │ # full_name: string             │
+               │ # age: int                      │
+               ├─────────────────────────────────┤
+               │ + virtual displayInfo(): void =0│
+               │ + virtual ~Person()             │
+               └────────────────┬────────────────┘
+                                │
+                        Public Inheritance
+                                │
+                                ▼
+               ┌─────────────────────────────────┐
+               │             Student             │
+               ├─────────────────────────────────┤
+               │ - id: int                       │
+               │ - cs_mark, math_mark, eng: double│
+               │ - attendance_record: int        │
+               │ - gpa: double                   │
+               ├─────────────────────────────────┤
+               │ + displayInfo() override        │
+               │ + calculateGPA(): void          │
+               │ + overallAverage(): double      │
+               └────────────────┬────────────────┘
+                                │
+                         Grants Access To
+                                │
+                                ▼
+               ┌─────────────────────────────────┐
+               │    friend void exportsdata()    │
+               └─────────────────────────────────┘
+File OrganizationThe monolithic implementation is structured across highly-cohesive logical segments:Preprocessor Context & State: Core headers (<fstream>, <vector>, <algorithm>) alongside global session variables (currentUser, class_list).Authentication Subsystem: User structural schemas linked with algorithmic safety guards checking structural role hierarchies.File I/O Engine: Dual-stream synchronization routines outputting state snapshots to secondary hardware backups concurrently.Analytical Modules: Granular functional components processing search lookups, class statistical boundaries, report generation, and sorting pipelines.👤 User Roles & PermissionsFeatureAdminTeacherStudentSearch Profiles✅✅❌View Metrics & Averages✅✅✅Access Grade/GPA Tooling✅✅✅Modify Records / Add Students✅✅❌Purge Records (Delete)✅❌❌Attendance Tracking✅✅❌User Management Operations✅❌❌📂 File SpecificationsThe system relies on structured Comma-Separated Values (CSV) schemas stored in flat .txt formats:students.txt / students_backup.txtCode snippet<ID>,<Name>,<Age>,<CS_Mark>,<Math_Mark>,<English_Mark>,<Attendance>,<GPA>
 101,Alice Smith,18,85.5,92.0,78.5,7,3.67
 102,Bob Jones,19,65.0,70.5,55.0,7,2.33
-users.txt / users_backup.txt
-plain
-<Username>,<Password>,<Role>
-Example:
-plain
+users.txt / users_backup.txtCode snippet<Username>,<Password>,<Role>
 admin,admin123,admin
 teacher1,pass456,teacher
 student1,pass789,student
-results.txt (Generated Export)
-plain
-			  Student Result Exported :
-ID: 101
- | Name: Alice Smith
- | Age : 18
-  | Overall Average Mark: 85.33
-  | Grade : A
-  | Attendance : 7
-  | Math : 92.0
-  | Computer Science : 85.5
-  | English : 78.5
-  | GPA : 3.67
- ---------------------------------------------
-👤 User Roles & Permissions
-Table
-Feature	Admin	Teacher	Student
-Search Student	✅	✅	❌
-View Averages	✅	✅	✅
-High/Low Marks	✅	✅	✅
-Grade System	✅	✅	✅
-Edit Student Data	✅	✅*	❌
-Sort/Display Info	✅	✅	❌
-Attendance	✅	✅	❌
-Exam Results	✅	✅	❌
-Scholarship Check	✅	✅	❌
-User Management	✅	✅	❌
-Report Card	✅	✅	❌
-*Teachers can update marks and add students, but some admin-only restrictions apply to deletion.
-🖥️ Compilation & Execution
-Compile
-bash
-g++ -o student_system Advanced.cpp -std=c++11
-Run
-bash
-./student_system
-Prerequisites
-C++11 compatible compiler (g++, clang++)
-Terminal/Console with monospace font for best formatting
-Create users.txt before first run:
-plain
-admin,admin123,admin
-🎮 Menu Navigation
-plain
-[a] Search For a Student
+🛠️ Getting StartedPrerequisitesA C++11 compliant compiler (g++ 4.8.1+ or clang 3.3+)Standard Command Line / Terminal InterfaceCompilation & ExecutionClone or download the source code file (Advanced.cpp).Generate an initial validation profile by creating a file named users.txt in the same directory, containing:Code snippetadmin,admin123,admin
+Compile via your terminal terminal application:Bashg++ -o student_system Advanced.cpp -std=c++11
+Initialize the environment binary:Bash./student_system
+🎮 Menu Navigation StructurePlaintext[a] Search For a Student
     ├── (a) Search by Name
     ├── (b) Search by ID
     └── (c) Show Total Student List
-
 [b] See Average Marks of All Students
-
 [c] Highest and Lowest Marks
     └── (H)ighest / (L)owest
-
 [d] Grade System
     ├── (a) Normal Grade System (A, B, C, F)
     ├── (b) GPA System
     └── (c) Ranking System (Top 5)
-
 [e] Edit Student Data
-    ├── (a) Delete a Student by ID  [Admin Only]
+    ├── (a) Delete a Student by ID [Admin Only]
     ├── (b) Edit a Student's Information
-    │       ├── (1) Update Student Name
-    │       └── (2) Update Student Mark
+    │   ├── (1) Update Student Name
+    │   └── (2) Update Student Mark
     └── (c) Add New Student
-
 [f] Student Information & Sorting
     ├── (a) Sort by ID
     ├── (b) Sort by Name
@@ -355,67 +139,14 @@ plain
     ├── (f) Sort by GPA
     ├── (g) Sort by Ranks
     └── (h) Report Card Generator
-
 [g] Manage Attendance
     ├── (a) Mark Attendance
     └── (b) See Attendance Records
-
-[h] Process Exam Results
-    └── Auto-export prompt to results.txt
-
+[h] Process Exam Results ──> (Auto-exports to results.txt)
 [i] Scholarship Eligibility Checker
-
 [j] User Management System
     ├── (a) Check User List
-    ├── (b) Register New User  [Admin Only]
-    └── (c) Delete User        [Admin Only]
-
+    ├── (b) Register New User [Admin Only]
+    └── (c) Delete User       [Admin Only]
 [o] Exit Program
-
-🔄 Data Flow
-
-table
-┌──────────┐     ┌──────────┐     ┌──────────┐
-│  Start   │────▶│  Login   │────▶│ Load Data│
-└──────────┘     └──────────┘     └────┬─────┘
-                                       │
-                    ┌──────────────────┘
-                    ▼
-            ┌──────────────┐
-            │  Main Menu   │◄────────────────┐
-            └──────┬───────┘                 │
-                   │                         │
-         ┌────────┴────────┐                │
-         ▼                 ▼                │
-   ┌──────────┐     ┌──────────┐            │
-   │ Operation│     │  Display │            │
-   │ (CRUD)   │     │  Output  │            │
-   └────┬─────┘     └──────────┘            │
-        │                                   │
-        ▼                                   │
-   ┌──────────┐                             │
-   │ Save to  │─────────────────────────────┘
-   │   File   │
-   └────┬─────┘
-        │
-        ▼
-   ┌──────────┐
-   │   Exit   │
-   └──────────┘
-
-🛡️ OOP Principles Demonstrated
-
-Principle	Implementation
-Inheritance	class student : public Person
-Polymorphism	virtual void displayInfo() overridden in student
-Encapsulation	Private members with public getters/setters
-Abstraction	Person as base class; user interacts via menus
-Friend Function	exportsdata() accesses private student data for file export
-
-📝 Notes
-Backup Redundancy: Every write operation saves to both main and backup files.
-GPA Auto-Calculation: Updating any subject mark automatically recalculates GPA.
-Stream Safety: File streams are explicitly closed after operations.
-Input Sanitization: cin.ignore() and cin.clear() used to handle invalid menu inputs.
-Global State: currentuser and class_list are global for simplicity in a single-file academic project.
-Built for academic purposes. Pure C++ with no external dependencies.
+🛡️ OOP Principles DemonstratedInheritance: Concrete implementation extending specialized attributes from an abstract base (student : public Person).Polymorphism: Utilizing runtime dynamic binding via virtual member overrides to display specialized class logs dynamically.Encapsulation: Absolute protection of internal structural data using restrictive access specifiers combined with validated accessors and mutators.Friend Functions: Utilizing explicit scope bypass rules (friend void exportsdata()) to bridge clean interactions between class components and I/O streams safely.
